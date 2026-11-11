@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Campo de texto reutilizado nos formulários (rótulo e tipo são definidos no Java) -->
+<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/til"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1" />
+</com.google.android.material.textfield.TextInputLayout>

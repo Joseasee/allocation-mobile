@@ -1,0 +1,29 @@
+<resources>
+    <!-- Tema claro do app (azul-marinho + verde). As cores ficam em colors.xml -->
+    <style name="Base.Theme.MyApplication" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/azul</item>
+        <item name="colorOnPrimary">@color/branco</item>
+        <item name="colorPrimaryContainer">@color/azul_claro</item>
+        <item name="colorOnPrimaryContainer">@color/azul_escuro</item>
+        <item name="colorSecondary">@color/verde</item>
+        <item name="colorOnSecondary">@color/branco</item>
+        <item name="colorSecondaryContainer">@color/azul_claro</item>
+        <item name="colorOnSecondaryContainer">@color/azul_escuro</item>
+        <item name="colorTertiary">@color/ambar</item>
+        <item name="colorError">@color/vermelho</item>
+        <item name="colorErrorContainer">@color/vermelho_claro</item>
+        <item name="android:colorBackground">@color/fundo</item>
+        <item name="colorSurface">@color/branco</item>
+        <item name="colorOnSurface">@color/texto</item>
+        <item name="colorOnSurfaceVariant">@color/texto_suave</item>
+        <item name="colorOutline">@color/borda_forte</item>
+        <item name="colorOutlineVariant">@color/borda</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="materialCardViewStyle">@style/Cartao</item>
+        <item name="materialButtonStyle">@style/Botao</item>
+        <item name="textInputStyle">@style/CampoTexto</item>
+    </style>
+
+    <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
+</resources>
