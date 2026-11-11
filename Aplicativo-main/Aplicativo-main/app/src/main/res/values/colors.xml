@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Paleta do app: mexa aqui para mudar o visual inteiro -->
+    <color name="azul_escuro">#0B2F4A</color>
+    <color name="azul">#145C8A</color>
+    <color name="azul_medio">#1F7AAE</color>
+    <color name="azul_claro">#E3EFF8</color>
+    <color name="verde">#1B9E77</color>
+    <color name="verde_claro">#DFF5EC</color>
+    <color name="vermelho">#D64545</color>
+    <color name="vermelho_claro">#FBE4E4</color>
+    <color name="ambar">#F2A93B</color>
+    <color name="fundo">#F4F7FA</color>
+    <color name="branco">#FFFFFF</color>
+    <color name="texto">#14202B</color>
+    <color name="texto_suave">#5B6B7A</color>
+    <color name="borda">#DDE5EC</color>
+    <color name="borda_forte">#B8C6D3</color>
+    <color name="branco_translucido">#33FFFFFF</color>
+    <color name="branco_80">#CCFFFFFF</color>
+</resources>
