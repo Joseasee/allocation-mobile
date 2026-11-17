@@ -69,6 +69,8 @@ public class AlocacaoActivity extends AppCompatActivity {
     private String frenteNome;
     private String frenteXpath;
     private String[] nomes;
+    private boolean horaExtra = true;
+    private volatile boolean horaExtraFeita = false; // já apertou hora extra nesta alocação (vale mesmo se o site recarregar)
     private String[] chapas;
     private boolean desalocar;          // true = tirar as pessoas da frente (em vez de alocar)
     private int naoEncontradas = 0;     // quantas pessoas não estavam na lista (só ao desalocar)
@@ -99,6 +101,7 @@ public class AlocacaoActivity extends AppCompatActivity {
         nomes = in.getStringArrayExtra("nomes");
         chapas = in.getStringArrayExtra("chapas");
         desalocar = "desalocar".equals(in.getStringExtra("modo"));
+        horaExtra = in.getBooleanExtra("horaExtra", true);
         if (numeroSetor == null || nomes == null || chapas == null || chapas.length == 0) {
             finish();
             return;
@@ -223,6 +226,7 @@ public class AlocacaoActivity extends AppCompatActivity {
                 p.put("chapas", new JSONArray(Arrays.asList(chapas)));
                 p.put("nomes", new JSONArray(Arrays.asList(nomes)));
                 p.put("modo", desalocar ? "desalocar" : "alocar");
+                p.put("horaExtra", horaExtra && !horaExtraFeita);
                 p.put("comecarEm", concluidas); // se o site recarregar, continua de onde parou
                 web.evaluateJavascript(script + "\n;window.__iniciarAlocacao(" + p + ");", null);
             } catch (JSONException e) {
@@ -416,6 +420,11 @@ public class AlocacaoActivity extends AppCompatActivity {
                 atual = indice;
                 atualizarProgresso();
             });
+        }
+
+        @JavascriptInterface
+        public void horaExtraFeita() {
+            horaExtraFeita = true;
         }
 
         @JavascriptInterface
