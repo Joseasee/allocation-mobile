@@ -275,6 +275,7 @@
     if (p.horaExtra !== false && !p.horaExtraFeita) {
       await clicar(XPATHS.clicarSempre);
       p.horaExtraFeita = true;
+      if (ponte.horaExtraFeita) ponte.horaExtraFeita(); // avisa o app: não clicar de novo, mesmo se o site recarregar
       await dormir(TEMPOS.entrePassos);
     }
     await clicar(XPATHS.botaoAdicionar);
