@@ -2,12 +2,11 @@
  * ====================================================================
  *  AUTOMAÇÃO DO SITE  (arquivo: app/src/main/assets/automacao.js)
  * ====================================================================
- *  VERSÃO DE DEMONSTRAÇÃO: os caminhos abaixo são exemplos e não apontam para nenhum site real.
  *  É AQUI que você ajusta os elementos do site. Não precisa mexer no Java.
  *
  *  Como achar o XPath: no Chrome, F12 > aponte o elemento > botão direito na
  *  linha do HTML > Copy > Copy XPath. Cole entre aspas SIMPLES ('...').
- *  O XPath copiado tem aspas duplas (@id="exemplo") e isso pode ficar assim.
+ *  O XPath copiado tem aspas duplas (@id="q-app") e isso pode ficar assim.
  *
  *  IMPORTANTE: o site muda de layout conforme o tamanho da tela. Para copiar o
  *  XPath do jeito que o celular enxerga, aperte Ctrl+Shift+M no F12 (modo
@@ -28,30 +27,30 @@
   // ===================== 1) CAMINHOS (XPath) DO SITE =====================
   var XPATHS = {
     // ---- Login ----
-    loginUsuario: '//*[@id="campo-usuario"]',
-    loginSenha:   '//*[@id="campo-senha"]',
-    loginIcone:   '//*[@id="icone-login"]',
-    loginOpcao:   '//*[@id="opcao-login"]',
+    loginUsuario: '//*[@id="q-app"]/div/div/div/div[1]/div[2]/div[1]/input',
+    loginSenha:   '//*[@id="q-app"]/div/div/div/div[1]/div[2]/div[2]/input',
+    loginIcone:   '//*[@id="q-app"]/div/div/div/div[1]/div[2]/div[3]/div/div/i',
+    loginOpcao:   '//*[@id="q-app"]/div/div/div/div[1]/div[2]/div[3]/div/div/div[2]/div[1]',
     // Reserva: o app procura o botão pelo TEXTO (veja logo abaixo) e só usa este XPath se não achar.
-    loginEntrar:  '//*[@id="botao-entrar"]',
+    loginEntrar:  '//*[@id="q-app"]/div/div/div/div[1]/button',
 
     // ---- Começo da alocação (roda uma vez) ----
-    botaoNovo:         '//*[@id="botao-novo"]',
-    campoFrente:       '//*[@id="campo-frente"]',
-    campoCodigoFrente: '//*[@id="campo-codigo"]',
-    campoBuscarFrente: '//*[@id="botao-buscar"]',
+    botaoNovo:         '//*[@id="q-app"]/div/div[2]/div[2]/div/div[1]/div/button',
+    campoFrente:       '//*[@id="q-app"]/div/div[2]/div[2]/div[1]/div[1]/div/div[2]/div/input',
+    campoCodigoFrente: '//*[@id="q-app"]/div/div[2]/div[2]/div[1]/div[2]/div/input',
+    campoBuscarFrente: '//*[@id="q-app"]/div/div[2]/div[2]/div[1]/div[3]/div/button',
 
     // ---- Para cada pessoa (repete) ----
-    botaoFuncionario:  '//*[@id="botao-funcionario"]',
-    campoChapa:        '//*[@id="campo-chapa"]',
-    clicarSempre:      '//*[@id="opcao-sempre"]',
-    botaoAdicionar:    '//*[@id="botao-adicionar"]',
+    botaoFuncionario:  '/html/body/div[1]/div/div[2]/div[2]/div[3]/div[1]/div[1]/button',
+    campoChapa:        '//*[@id="q-app"]/div/div[2]/div[2]/div[4]/div/div/div[1]/div/input',
+    clicarSempre:      '//*[@id="q-app"]/div/div[2]/div[2]/div[4]/div/div/div[6]/div[1]/div/input',
+    botaoAdicionar:    '//*[@id="q-app"]/div/div[2]/div[2]/div[4]/div/div/div[8]/div/div/button',
 
     // ---- Desalocar ----
     // Botão que abre a lista de pessoas alocadas (depois de clicar em "clicarSempre")
-    botaoListarAlocados: '//*[@id="botao-listar"]',
+    botaoListarAlocados: '//*[@id="q-app"]/div/div[2]/div[2]/div[4]/div/div/div[2]/div/button',
     // Todas as linhas da tabela de alocados (a posição de cada pessoa muda conforme a quantidade)
-    tabelaLinhas: '//*[@id="tabela-alocados"]/tbody/tr',
+    tabelaLinhas: '/html/body/div[3]/div/div[2]/div/div[2]/div/div/div/div/table/tbody/tr',
     // Caminhos DENTRO de cada linha (começam com ./ e valem para qualquer linha)
     linhaPessoa: './td[1]',                     // coluna onde aparece a chapa/nome
     linhaBotaoDesalocar: './td[5]/span/button[3]',
@@ -266,14 +265,18 @@
     await dormir(TEMPOS.aposFrente);
   }
 
-  async function passosPessoa(chapa) {
+  async function passosPessoa(chapa, p) {
     etapa('Adicionando a chapa ' + chapa + '...');
     await clicar(XPATHS.botaoFuncionario);
     await dormir(TEMPOS.entrePassos);
     await digitar(XPATHS.campoChapa, chapa);
     await dormir(TEMPOS.entrePassos);
-    await clicar(XPATHS.clicarSempre);
-    await dormir(TEMPOS.entrePassos);
+    // Hora extra: aperta UMA vez só (na primeira pessoa desta execução); o site mantém a opção ligada.
+    if (p.horaExtra !== false && !p.horaExtraFeita) {
+      await clicar(XPATHS.clicarSempre);
+      p.horaExtraFeita = true;
+      await dormir(TEMPOS.entrePassos);
+    }
     await clicar(XPATHS.botaoAdicionar);
     etapa('Aguardando o site registrar a chapa ' + chapa + '...');
     await dormir(TEMPOS.aposAdicionar);
@@ -372,8 +375,10 @@
     etapa('Abrindo a área de funcionário...');
     await clicar(XPATHS.botaoFuncionario);
     await dormir(TEMPOS.entrePassos);
-    await clicar(XPATHS.clicarSempre);
-    await dormir(TEMPOS.entrePassos);
+    if (p.horaExtra !== false) {
+      await clicar(XPATHS.clicarSempre);
+      await dormir(TEMPOS.entrePassos);
+    }
 
     var total = p.chapas.length;
     for (var i = p.comecarEm; i < total; i++) {
@@ -412,7 +417,7 @@
       var total = p.chapas.length;
       for (var i = p.comecarEm; i < total; i++) {
         ponte.progresso(i, total);
-        await passosPessoa(p.chapas[i]);
+        await passosPessoa(p.chapas[i], p);
         ponte.pessoaConcluida(i);
       }
       ponte.todasConcluidas();
